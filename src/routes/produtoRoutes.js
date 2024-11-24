@@ -1,17 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const produtoController = require('../controllers/produtoController');
-const Produto = require('../models/Produto');
+const produtoController = require('../controllers/produtoController'); // Importa o controlador completo
+const Produto = require('../models/Produto'); // Modelo Produto
 
+// Rota para buscar produtos pelo nome
 router.get('/buscar', produtoController.buscarProdutoPorNome);
+
 // Rotas para CRUD de produtos
-router.get('/', produtoController.getAllProdutos);  // Listar todos
-router.get('/:id', produtoController.getProdutoById);  // Listar por ID
-router.post('/', produtoController.createProduto);  // Criar
-router.put('/:id', produtoController.updateProduto);  // Editar
-router.delete('/:id', produtoController.deleteProduto);  // Deletar
+router.get('/', produtoController.getAllProdutos);  // Listar todos os produtos
+router.get('/:id', produtoController.getProdutoById);  // Listar produto por ID
+router.post('/', produtoController.createProduto);  // Criar produto
+router.get("/buscar", produtoController.buscarProdutos);
 
+// Rota para listar produtos por categoria específica
+router.get('/categoria/:categoriaId', produtoController.getProdutosByCategoria); 
 
+router.put('/:id', produtoController.updateProduto);  // Editar produto
+router.delete('/:id', produtoController.deleteProduto);  // Deletar produto
+
+// Rota para inserir múltiplos produtos em uma única requisição (bulk insert)
 router.post('/bulk', async (req, res) => {
   try {
     const produtos = await Produto.insertMany(req.body);
@@ -19,17 +26,6 @@ router.post('/bulk', async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
-
-router.get('/buscar', async (req, res) => {
-    const { nome } = req.query;
-    try {
-      const produtos = await Produto.find({ nome: { $regex: nome, $options: 'i' } });
-      res.json(produtos);
-    } catch (error) {
-      res.status(500).json({ message: 'Erro ao buscar produtos' });
-    }
-  });
-
 });
 
 module.exports = router;

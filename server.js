@@ -4,6 +4,8 @@ const bodyParser = require('body-parser'); // Middleware para processar dados JS
 const cors = require('cors'); // Middleware para permitir requisições cross-origin
 const produtoRoutes = require('./src/routes/produtoRoutes'); // Importa as rotas relacionadas aos produtos
 const authRoutes = require('./src/routes/authRoutes'); // Importa as rotas relacionadas à autenticação
+const empresaRoutes = require ('./src/routes/empresaRoutes'); // Importa as rotdas de empresa
+const categoriaRoutes = require ('./src/routes/categoriaRoutes');
 
 const app = express(); // Inicializa a aplicação Express
 const PORT = process.env.PORT || 5000; // Define a porta do servidor (usa a porta definida nas variáveis de ambiente ou 5000 por padrão)
@@ -17,11 +19,12 @@ const mongoUri = 'mongodb+srv://isaquecascaes:12345@cluster0.bmbh4.mongodb.net/p
 mongoose.connect(mongoUri)
   .then(() => console.log('Conectado ao MongoDB Atlas')) // Loga no console caso a conexão seja bem-sucedida
   .catch((err) => console.error(err)); // Loga no console caso ocorra um erro na conexão
-
+//aaa
 // Usar rotas de produto
 app.use('/api/produtos', produtoRoutes); // Define as rotas para a URL base `/api/produtos` que serão manipuladas pelo `produtoRoutes`
 app.use('/api/auth', authRoutes); // Define as rotas para a URL base `/api/auth` que serão manipuladas pelo `authRoutes`
-
+app.use('/api/empresas', empresaRoutes);
+app.use('/api/categorias', categoriaRoutes);
 // Iniciar o servidor
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`); // Exibe no console que o servidor está rodando e a porta que está sendo usada
