@@ -11,7 +11,12 @@ const app = express(); // Inicializa a aplicação Express
 const PORT = process.env.PORT || 5000; // Define a porta do servidor (usa a porta definida nas variáveis de ambiente ou 5000 por padrão)
 
 // Middleware
-app.use(cors()); // Habilita o CORS para permitir que o servidor seja acessado por diferentes origens
+app.use(cors({
+  origin: 'https://ecofinder-oficial.netlify.app/', // Substitua pelo domínio do seu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
+}));
+ // Habilita o CORS para permitir que o servidor seja acessado por diferentes origens
 app.use(bodyParser.json()); // Configura o Body-Parser para que o servidor possa lidar com requisições no formato JSON
 
 // Conectar ao MongoDB Atlas
